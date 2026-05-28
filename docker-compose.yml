@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # 🧠 1. Backend Service Configuration
+  backend:
+    build: ./backend
+    container_name: ats-backend-container
+    ports:
+      - "8000:8000"
+    environment:
+      # 🔑 Direct environment variable injection
+      - GEMINI_API_KEY=AIzaSyCpUXsA1sU3rkwRXc-aFLGMZS78_TrY3Y8
+    networks:
+      - ats-network
+
+  # 🎨 2. Frontend Service Configuration
+  frontend:
+    build: ./frontend
+    container_name: ats-frontend-container
+    ports:
+      - "8501:8501"
+    networks:
+      - ats-network
+    # Yeh backend container ke start hone ka wait karega
+    depends_on:
+      - backend
+
+networks:
+  ats-network:
+    driver: bridge
